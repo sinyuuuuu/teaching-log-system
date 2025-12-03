@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>教學紀錄 - Side Project</title>
+  <style>
+    body {
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 10px;
+      background: #f7f7f7;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 80px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row > div {
+      flex: 1;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      margin-top: 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #4a90e2;
+      color: #fff;
+    }
+    .log-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .log-item:last-child {
+      border-bottom: none;
+    }
+    .log-title {
+      font-weight: bold;
+    }
+    .log-meta {
+      color: #777;
+      font-size: 14px;
+    }
+    .tag {
+      display: inline-block;
+      background: #ffe7c4;
+      color: #b05a00;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 12px;
+      margin-right: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>補習班教學紀錄</h1>
+
+  <!-- 新增紀錄表單（目前先不真的送出） -->
+  <div class="card">
+    <h2>新增教學紀錄（Prototype）</h2>
+    <div class="row">
+      <div>
+        <label>日期</label>
+        <input type="date" name="class_date">
+      </div>
+      <div>
+        <label>時段</label>
+        <input type="text" name="time_slot" placeholder="例：18:30-20:30">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>年級</label>
+        <input type="text" name="grade" placeholder="例：國一、國三">
+      </div>
+      <div>
+        <label>科目</label>
+        <input type="text" name="subject" placeholder="例：數學、英文">
+      </div>
+      <div>
+        <label>班級名稱</label>
+        <input type="text" name="class_name" placeholder="例：國一A班">
+      </div>
+    </div>
+
+    <label>本堂課內容重點</label>
+    <textarea name="content" placeholder="今天上的章節、題型、活動..."></textarea>
+
+    <label>學生狀況 / 教學觀察</label>
+    <textarea name="student_notes" placeholder="誰跟不上？誰需要多關心？誰有進步？"></textarea>
+
+    <label>作業 / 下次要追蹤的項目</label>
+    <textarea name="homework" placeholder="指定作業、下次複習重點..."></textarea>
+
+    <label>標籤（用逗號分隔）</label>
+    <input type="text" name="tags" placeholder="例：國一數學, 段考複習, 情緒管理">
+
+    <button class="btn btn-primary">（之後會做成真正的「儲存」）</button>
+  </div>
+
+  <!-- 紀錄列表 Prototype（先寫死假資料） -->
+  <div class="card">
+    <h2>最近的教學紀錄（假資料示意）</h2>
+
+    <div class="log-item">
+      <div class="log-title">2025-12-01 國一A班 數學：一次函數</div>
+      <div class="log-meta">時段：18:30-20:30 ｜ 標籤：
+        <span class="tag">國一數學</span>
+        <span class="tag">段考複習</span>
+      </div>
+      <div>內容：複習一次函數圖形判讀，練習考古題。</div>
+      <div>學生狀況：小明計算速度慢，需特別關注；小美進步很多。</div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-title">2025-11-30 國三B班 英文：克漏字練習</div>
+      <div class="log-meta">時段：19:00-21:00 ｜ 標籤：
+        <span class="tag">國三英文</span>
+        <span class="tag">模考衝刺</span>
+      </div>
+      <div>內容：模考第六回克漏字講解。</div>
+      <div>學生狀況：整體專注度高，但有幾位單字量明顯不足。</div>
+    </div>
+  </div>
+
+</body>
+</html>
