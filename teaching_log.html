@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>教學紀錄 - Side Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: Arial, "Microsoft JhengHei", sans-serif;
-      max-width: 900px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+      max-width: 960px;
       margin: 20px auto;
-      padding: 0 10px;
+      padding: 0 10px 40px;
       background: #f7f7f7;
     }
     h1 {
       text-align: center;
+      margin-bottom: 20px;
     }
     .card {
       background: #fff;
@@ -21,10 +23,15 @@
       margin-bottom: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
     label {
       display: block;
       margin-top: 10px;
       font-weight: bold;
+      font-size: 14px;
     }
     input[type="text"],
     input[type="date"],
@@ -36,16 +43,20 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       box-sizing: border-box;
+      font-size: 14px;
     }
     textarea {
       min-height: 80px;
+      resize: vertical;
     }
     .row {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
     .row > div {
       flex: 1;
+      min-width: 150px;
     }
     .btn {
       display: inline-block;
@@ -54,10 +65,38 @@
       border-radius: 4px;
       border: none;
       cursor: pointer;
+      font-size: 14px;
     }
     .btn-primary {
       background: #4a90e2;
       color: #fff;
+    }
+    .btn-secondary {
+      background: #eee;
+      color: #333;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .small-hint {
+      font-size: 12px;
+      color: #777;
+      margin-top: 2px;
+    }
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .pill {
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      padding: 4px 10px;
+      font-size: 12px;
+      background: #fafafa;
+      cursor: default;
     }
     .log-item {
       border-bottom: 1px solid #eee;
@@ -82,80 +121,322 @@
       font-size: 12px;
       margin-right: 4px;
     }
+    .generated-box {
+      background: #fafafa;
+      border-radius: 6px;
+      padding: 10px;
+      border: 1px dashed #ddd;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
   <h1>補習班教學紀錄</h1>
 
-  <!-- 新增紀錄表單（目前先不真的送出） -->
+  <!-- 學生紀錄自動生成 -->
   <div class="card">
-    <h2>新增教學紀錄（Prototype）</h2>
+    <h2>學生教學紀錄自動生成（Prototype）</h2>
+
+    <!-- 基本資訊 -->
     <div class="row">
       <div>
         <label>日期</label>
-        <input type="date" name="class_date">
+        <input type="date" id="class_date">
       </div>
       <div>
-        <label>時段</label>
-        <input type="text" name="time_slot" placeholder="例：18:30-20:30">
+        <label>學生姓名</label>
+        <input type="text" id="student_name" placeholder="例：謝沛翔">
       </div>
-    </div>
-
-    <div class="row">
       <div>
         <label>年級</label>
-        <input type="text" name="grade" placeholder="例：國一、國三">
-      </div>
-      <div>
-        <label>科目</label>
-        <input type="text" name="subject" placeholder="例：數學、英文">
-      </div>
-      <div>
-        <label>班級名稱</label>
-        <input type="text" name="class_name" placeholder="例：國一A班">
+        <input type="text" id="grade" placeholder="例：國一、國三">
       </div>
     </div>
 
-    <label>本堂課內容重點</label>
-    <textarea name="content" placeholder="今天上的章節、題型、活動..."></textarea>
+    <!-- 課程選擇 -->
+    <div class="row">
+      <div>
+        <label>課程分類</label>
+        <select id="course_category">
+          <option value="">請選擇分類</option>
+          <option value="scratch">Scratch 遊戲設計</option>
+          <option value="python">Python 程式設計</option>
+          <option value="web">網頁／JS</option>
+        </select>
+      </div>
+      <div>
+        <label>課程名稱 / 單元</label>
+        <select id="course_id">
+          <option value="">請先選擇分類</option>
+        </select>
+        <div class="small-hint">※ 之後會從後台課程資料表帶入</div>
+      </div>
+    </div>
 
-    <label>學生狀況 / 教學觀察</label>
-    <textarea name="student_notes" placeholder="誰跟不上？誰需要多關心？誰有進步？"></textarea>
+    <!-- 狀態模板（理解程度／專注度／完成度） -->
+    <div class="row">
+      <div>
+        <label>理解程度</label>
+        <select id="level_understanding">
+          <option value="good">充分理解（觀念穩定）</option>
+          <option value="ok">大致理解（實作時仍需協助）</option>
+          <option value="need">觀念不穩定（需要加強）</option>
+        </select>
+      </div>
+      <div>
+        <label>上課專注度</label>
+        <select id="level_focus">
+          <option value="high">非常專注</option>
+          <option value="mid">普通，需要偶爾提醒</option>
+          <option value="low">容易分心</option>
+        </select>
+      </div>
+      <div>
+        <label>作品完成度</label>
+        <select id="level_progress">
+          <option value="done">已完成主要功能</option>
+          <option value="partial">部分完成，下次續作</option>
+          <option value="undone">尚未完成，需補做</option>
+        </select>
+      </div>
+    </div>
 
-    <label>作業 / 下次要追蹤的項目</label>
-    <textarea name="homework" placeholder="指定作業、下次複習重點..."></textarea>
+    <!-- 是否有分心或特殊狀況 -->
+    <label>特殊狀況（選填，可複選）</label>
+    <div class="pill-group">
+      <label class="pill">
+        <input type="checkbox" id="flag_talk" style="margin-right:4px;"> 易與同學聊天
+      </label>
+      <label class="pill">
+        <input type="checkbox" id="flag_rush" style="margin-right:4px;"> 做題過於急躁
+      </label>
+      <label class="pill">
+        <input type="checkbox" id="flag_slow" style="margin-right:4px;"> 需要較多時間理解題目
+      </label>
+      <label class="pill">
+        <input type="checkbox" id="flag_absent" style="margin-right:4px;"> 中途請假／缺課
+      </label>
+    </div>
 
-    <label>標籤（用逗號分隔）</label>
-    <input type="text" name="tags" placeholder="例：國一數學, 段考複習, 情緒管理">
+    <!-- 課程模板自動說明（先顯示假資料） -->
+    <label>課程模板說明（自動帶入，可微調）</label>
+    <textarea id="course_template_note" placeholder="選擇課程後，會自動帶入該單元的學習重點與遊戲規則說明。"></textarea>
 
-    <button class="btn btn-primary">（之後會做成真正的「儲存」）</button>
+    <!-- 補充說明 -->
+    <label>補充說明（選填）</label>
+    <textarea id="extra_note" placeholder="例如：下次課前可先複習 random() 與條件判斷；或在家練習 10 分鐘遊戲操作流程。"></textarea>
+
+    <!-- 生成＋複製 -->
+    <button class="btn btn-primary" id="btn_generate">生成完整紀錄</button>
+    <button class="btn btn-secondary" id="btn_copy" disabled>複製到剪貼簿</button>
+
+    <!-- 輸出區 -->
+    <label style="margin-top:16px;">輸出結果（可直接貼到系統／LINE 給家長）</label>
+    <div class="generated-box">
+      <textarea id="output_text" readonly placeholder="點上方「生成完整紀錄」後會出現文字。"></textarea>
+    </div>
   </div>
 
-  <!-- 紀錄列表 Prototype（先寫死假資料） -->
+  <!-- 下面先保留你原本「最近教學紀錄」範例（假資料） -->
   <div class="card">
     <h2>最近的教學紀錄（假資料示意）</h2>
 
     <div class="log-item">
-      <div class="log-title">2025-12-01 國一A班 數學：一次函數</div>
+      <div class="log-title">2025-12-01 國一A班 Scratch 遊戲設計：公牛亂入</div>
       <div class="log-meta">時段：18:30-20:30 ｜ 標籤：
-        <span class="tag">國一數學</span>
-        <span class="tag">段考複習</span>
+        <span class="tag">Scratch</span>
+        <span class="tag">邏輯思維</span>
       </div>
-      <div>內容：複習一次函數圖形判讀，練習考古題。</div>
-      <div>學生狀況：小明計算速度慢，需特別關注；小美進步很多。</div>
+      <div>
+        學生謝沛翔，本週在「公牛亂入」專案中，能夠理解亂數與條件判斷的抽象觀念，
+        專案可完整執行，並能說明遊戲結束條件（boy.direction 為 0 或 180）。
+      </div>
     </div>
 
     <div class="log-item">
-      <div class="log-title">2025-11-30 國三B班 英文：克漏字練習</div>
+      <div class="log-title">2025-11-30 國三B班 Python：if/else 闖關遊戲</div>
       <div class="log-meta">時段：19:00-21:00 ｜ 標籤：
-        <span class="tag">國三英文</span>
-        <span class="tag">模考衝刺</span>
+        <span class="tag">Python</span>
+        <span class="tag">條件判斷</span>
       </div>
-      <div>內容：模考第六回克漏字講解。</div>
-      <div>學生狀況：整體專注度高，但有幾位單字量明顯不足。</div>
+      <div>
+        學生小明本週雖然部分關卡尚未完成，但已能口述 if / else 的執行順序，
+        建議下次課前先複習教材中的示範程式。
+      </div>
     </div>
   </div>
 
+  <script>
+    // --- 課程模板假資料（之後會改成從資料表抓） ---
+    const COURSE_TEMPLATES = {
+      scratch_bull: {
+        category: 'scratch',
+        title: 'Scratch 遊戲設計〈公牛亂入〉',
+        focus: '清楚 and、or、not 的用法，能找出專案中有運用到的部分，也知道如何利用 random() 讓公牛隨機向前向後旋轉以及如何調整旋轉頻率。',
+        endCondition: '能夠說明遊戲結束的條件（boy.direction 為 0 或 180）。'
+      },
+      scratch_maze: {
+        category: 'scratch',
+        title: 'Scratch 遊戲設計〈迷宮逃脫〉',
+        focus: '練習座標移動與碰撞偵測，能說明角色碰到牆壁時需重新開始的遊戲規則。',
+        endCondition: '了解抵達終點旗幟時遊戲過關的判定方式。'
+      },
+      python_if: {
+        category: 'python',
+        title: 'Python 程式設計〈if/else 闖關〉',
+        focus: '熟悉 if、elif、else 的基本用法，能依照條件輸出不同結果。',
+        endCondition: '能說明通過所有關卡條件，以及錯誤輸入時程式如何回饋。'
+      },
+      web_js: {
+        category: 'web',
+        title: '網頁前端〈互動按鈕與事件〉',
+        focus: '了解基本 HTML 結構與 JavaScript 事件監聽，能讓按鈕觸發簡單互動效果。',
+        endCondition: '知道如何檢查按鈕是否正常觸發並更新畫面內容。'
+      }
+    };
+
+    // --- 狀態模板：理解程度 / 專注度 / 完成度 ---
+    const UNDERSTANDING_TEXT = {
+      good: '經過多次實際練習操作後，能夠了解本單元中的抽象觀念，並能連結到實際專案操作。',
+      ok: '對核心觀念已有初步概念，在老師引導下能完成大部分步驟，但實作時仍需要一些提醒與協助。',
+      need: '目前對相關抽象觀念仍不夠穩定，實作時容易卡關，後續需要安排更多複習與練習。'
+    };
+
+    const FOCUS_TEXT = {
+      high: '課堂中整體表現相當專注，能跟上教學節奏並主動完成練習。',
+      mid: '大致能跟上課程進度，偶爾會分心，但提醒後能很快回到狀態。',
+      low: '本堂課比較容易分心，須多次提醒才重新投入活動，建議在課前先協助調整學習心情。'
+    };
+
+    const PROGRESS_TEXT = {
+      done: '專案製作能在課堂中完成主要功能，並且能順利執行。',
+      partial: '專案目前已完成主要架構與部分功能，仍有細節尚未完成，預計下次課程繼續完善。',
+      undone: '本次課程以觀念講解與操作練習為主，專案尚未正式完成，後續需要額外時間補做。'
+    };
+
+    const SPECIAL_FLAGS_TEXT = function(flags) {
+      const parts = [];
+      if (flags.flag_talk) {
+        parts.push('上課時偶爾會與同學聊天，需提醒維持安靜與專注。');
+      }
+      if (flags.flag_rush) {
+        parts.push('在操作或作答時稍顯急躁，容易忽略題目細節，建議放慢速度、先看懂題目再下手。');
+      }
+      if (flags.flag_slow) {
+        parts.push('理解題目時需要較多時間，適合搭配圖像或示範說明來輔助理解。');
+      }
+      if (flags.flag_absent) {
+        parts.push('本單元因為中途請假／缺課，實作練習時間相對較少，後續需要額外補課或複習。');
+      }
+      return parts.join(' ');
+    };
+
+    // --- 根據分類更新課程下拉 ---
+    const courseCategorySelect = document.getElementById('course_category');
+    const courseSelect = document.getElementById('course_id');
+    const courseTemplateNote = document.getElementById('course_template_note');
+    const outputText = document.getElementById('output_text');
+    const btnGenerate = document.getElementById('btn_generate');
+    const btnCopy = document.getElementById('btn_copy');
+
+    function refreshCourseOptions() {
+      const category = courseCategorySelect.value;
+      courseSelect.innerHTML = '';
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = category ? '請選擇課程' : '請先選擇分類';
+      courseSelect.appendChild(defaultOption);
+
+      Object.entries(COURSE_TEMPLATES).forEach(([key, obj]) => {
+        if (!category || obj.category === category) {
+          const opt = document.createElement('option');
+          opt.value = key;
+          opt.textContent = obj.title;
+          courseSelect.appendChild(opt);
+        }
+      });
+
+      // 清空課程模板說明
+      courseTemplateNote.value = '';
+    }
+
+    function updateCourseTemplateNote() {
+      const cid = courseSelect.value;
+      if (!cid || !COURSE_TEMPLATES[cid]) {
+        courseTemplateNote.value = '';
+        return;
+      }
+      const c = COURSE_TEMPLATES[cid];
+      courseTemplateNote.value =
+        `本週課程主題為「${c.title}」，主要練習重點為：${c.focus} ` +
+        `${c.endCondition}`;
+    }
+
+    courseCategorySelect.addEventListener('change', refreshCourseOptions);
+    courseSelect.addEventListener('change', updateCourseTemplateNote);
+
+    // --- 生成文字 ---
+    btnGenerate.addEventListener('click', function () {
+      const name = document.getElementById('student_name').value.trim() || '（學生）';
+      const grade = document.getElementById('grade').value.trim();
+      const date = document.getElementById('class_date').value;
+      const cid = courseSelect.value;
+      const understandingKey = document.getElementById('level_understanding').value;
+      const focusKey = document.getElementById('level_focus').value;
+      const progressKey = document.getElementById('level_progress').value;
+      const extraNote = document.getElementById('extra_note').value.trim();
+
+      const flags = {
+        flag_talk: document.getElementById('flag_talk').checked,
+        flag_rush: document.getElementById('flag_rush').checked,
+        flag_slow: document.getElementById('flag_slow').checked,
+        flag_absent: document.getElementById('flag_absent').checked
+      };
+
+      const courseObj = COURSE_TEMPLATES[cid];
+      const dateText = date ? `${date}，` : '';
+      const gradeText = grade ? `（${grade}）` : '';
+
+      let courseTitle = '本週課程';
+      if (courseObj) {
+        courseTitle = courseObj.title;
+      }
+
+      const uText = UNDERSTANDING_TEXT[understandingKey] || '';
+      const fText = FOCUS_TEXT[focusKey] || '';
+      const pText = PROGRESS_TEXT[progressKey] || '';
+      const sText = SPECIAL_FLAGS_TEXT(flags);
+      const courseExtra = courseTemplateNote.value.trim();
+
+      let result = '';
+
+      result += `${dateText}學生 ${name}${gradeText} 本週在「${courseTitle}」課程中的表現：\n`;
+      if (uText) result += uText + '\n';
+      if (fText) result += fText + '\n';
+      if (pText) result += pText + '\n';
+      if (courseExtra) result += courseExtra + '\n';
+      if (sText) result += sText + '\n';
+      if (extraNote) result += extraNote + '\n';
+
+      outputText.value = result.trim();
+      btnCopy.disabled = !outputText.value;
+    });
+
+    // --- 複製到剪貼簿 ---
+    btnCopy.addEventListener('click', function () {
+      if (!outputText.value) return;
+      outputText.select();
+      document.execCommand('copy');
+      btnCopy.textContent = '已複製！';
+      setTimeout(() => {
+        btnCopy.textContent = '複製到剪貼簿';
+      }, 1500);
+    });
+
+    // 初始化：預設載入所有課程選項
+    refreshCourseOptions();
+  </script>
 </body>
 </html>
