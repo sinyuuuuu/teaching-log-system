@@ -140,10 +140,10 @@
 
     <!-- 基本資訊 -->
     <div class="row">
-      <div>
+      <!-- <div>
         <label>日期</label>
         <input type="date" id="class_date">
-      </div>
+      </div> -->
       <div>
         <label>學生姓名</label>
         <input type="text" id="student_name" placeholder="例：謝沛翔">
@@ -160,9 +160,15 @@
         <label>課程分類</label>
         <select id="course_category">
           <option value="">請選擇分類</option>
-          <option value="scratch">Scratch 遊戲設計</option>
-          <option value="python">Python 程式設計</option>
-          <option value="web">網頁／JS</option>
+          <option value="scratch_b">Scratch 實戰班</option>
+          <option value="scratch_a">Scratch 菁英班</option>
+          <option value="python_b">Python 程式開發班</option>
+          <option value="python_a">Python 程式進階班</option>
+          <option value="js_b">JavaScript 程式開發班</option>
+          <option value="html">HTML5 網頁程式開發班</option>
+          <option value="database">網路與資料庫</option>
+          <option value="algorithm">演算法研究</option>
+          <option value="ai">AI 人工智慧</option>
         </select>
       </div>
       <div>
@@ -212,7 +218,7 @@
         <input type="checkbox" id="flag_rush" style="margin-right:4px;"> 做題過於急躁
       </label>
       <label class="pill">
-        <input type="checkbox" id="flag_slow" style="margin-right:4px;"> 需要較多時間理解題目
+        <input type="checkbox" id="flag_slow" style="margin-right:4px;"> 需要較多時間理解
       </label>
       <label class="pill">
         <input type="checkbox" id="flag_absent" style="margin-right:4px;"> 中途請假／缺課
