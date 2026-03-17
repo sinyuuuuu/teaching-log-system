@@ -132,25 +132,17 @@
 </head>
 <body>
 
-  <h1>補習班教學紀錄</h1>
+  <h1>🍊橘子蘋果🍎教學紀錄</h1>
 
   <!-- 學生紀錄自動生成 -->
   <div class="card">
-    <h2>學生教學紀錄自動生成（Prototype）</h2>
+    <h2>學生教學紀錄自動生成</h2>
 
     <!-- 基本資訊 -->
     <div class="row">
-      <!-- <div>
-        <label>日期</label>
-        <input type="date" id="class_date">
-      </div> -->
       <div>
         <label>學生姓名</label>
         <input type="text" id="student_name" placeholder="例：謝沛翔">
-      </div>
-      <div>
-        <label>年級</label>
-        <input type="text" id="grade" placeholder="例：國一、國三">
       </div>
     </div>
 
@@ -199,11 +191,12 @@
         </select>
       </div>
       <div>
-        <label>作品完成度</label>
+        <label>專案完成度</label>
         <select id="level_progress">
-          <option value="done">已完成主要功能</option>
-          <option value="partial">部分完成，下次續作</option>
-          <option value="undone">尚未完成，需補做</option>
+          <option value="done">完成主要功能</option>
+          <option value="done_extra">完成課後綜合練習</option>
+          <option value="partial">部分完成，下次繼續</option>
+          <option value="undone">尚未完成，需重做</option>
         </select>
       </div>
     </div>
@@ -215,7 +208,7 @@
         <input type="checkbox" id="flag_talk" style="margin-right:4px;"> 易與同學聊天
       </label>
       <label class="pill">
-        <input type="checkbox" id="flag_rush" style="margin-right:4px;"> 做題過於急躁
+        <input type="checkbox" id="flag_rush" style="margin-right:4px;"> 實作過於急躁
       </label>
       <label class="pill">
         <input type="checkbox" id="flag_slow" style="margin-right:4px;"> 需要較多時間理解
@@ -225,20 +218,20 @@
       </label>
     </div>
 
-    <!-- 課程模板自動說明（先顯示假資料） -->
-    <label>課程模板說明（自動帶入，可微調）</label>
-    <textarea id="course_template_note" placeholder="選擇課程後，會自動帶入該單元的學習重點與遊戲規則說明。"></textarea>
+    <!-- 課程模板自動說明 -->
+    <label>課程模板說明</label>
+    <textarea id="course_template_note" placeholder="選擇課程後，會自動帶入該單元的學習重點與專案說明。"></textarea>
 
     <!-- 補充說明 -->
-    <label>補充說明（選填）</label>
-    <textarea id="extra_note" placeholder="例如：下次課前可先複習 random() 與條件判斷；或在家練習 10 分鐘遊戲操作流程。"></textarea>
+    <label>補充說明</label>
+    <textarea id="extra_note" placeholder="例如：今日回家挑戰題目：製作商品購買總額，並計算剩餘金額。"></textarea>
 
     <!-- 生成＋複製 -->
     <button class="btn btn-primary" id="btn_generate">生成完整紀錄</button>
     <button class="btn btn-secondary" id="btn_copy" disabled>複製到剪貼簿</button>
 
     <!-- 輸出區 -->
-    <label style="margin-top:16px;">輸出結果（可直接貼到系統／LINE 給家長）</label>
+    <label style="margin-top:16px;">輸出結果</label>
     <div class="generated-box">
       <textarea id="output_text" readonly placeholder="點上方「生成完整紀錄」後會出現文字。"></textarea>
     </div>
